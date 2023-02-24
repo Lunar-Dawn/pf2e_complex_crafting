@@ -8,6 +8,8 @@
 			Copyright &copy; 2023 Lunar Requiem
 			<br/>
 			Licensed under the MIT license
+			<br/>
+			<a href="https://github.com/LunarRequiem/pf2e_complex_crafting">Source code available on GitHub</a>
 		</p>
 	</div>
 </template>
