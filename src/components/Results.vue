@@ -16,14 +16,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="(day, index) in results.days" :class="{ setup: index < calculation.setupDays() }">
-				<th>{{ index + 1}}</th>
-				<td>{{ formatCoins(day.criticalSuccess.valueSpent) }}</td>
-				<td>{{ formatCoins(day.criticalSuccess.valueTotal) }}</td>
-				<td>{{ formatCoins(day.criticalSuccess.costRemaining) }}</td>
-				<td>{{ formatCoins(day.success.valueSpent) }}</td>
-				<td>{{ formatCoins(day.success.valueTotal) }}</td>
-				<td>{{ formatCoins(day.success.costRemaining) }}</td>
+			<tr v-for="row in calculation.finalCalculation()" :class="{ setup: row.isSetup }">
+				<th>{{ row.day }}</th>
+				<td>{{ formatCoins(row.criticalSuccess.valueSpent) }}</td>
+				<td>{{ formatCoins(row.criticalSuccess.valueTotal) }}</td>
+				<td>{{ formatCoins(row.criticalSuccess.costRemaining) }}</td>
+				<td>{{ formatCoins(row.success.valueSpent) }}</td>
+				<td>{{ formatCoins(row.success.valueTotal) }}</td>
+				<td>{{ formatCoins(row.success.costRemaining) }}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -33,9 +33,7 @@
 import formatCoins from "../util/formatCoins";
 
 import CraftingCalculations from "../util/craftingCalculation";
-
 const calculation = $ref(new CraftingCalculations())
-const results = $computed(() => calculation.finalCalculation())
 </script>
 
 <style scoped lang="scss">

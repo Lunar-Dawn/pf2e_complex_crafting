@@ -10,12 +10,10 @@ interface SuccessDay {
 }
 
 interface TableRow {
+	day: number,
+	isSetup: boolean,
 	criticalSuccess: SuccessDay,
 	success: SuccessDay,
-}
-
-interface FinalTable {
-	days: TableRow[]
 }
 
 class CraftingCalculations {
@@ -50,58 +48,39 @@ class CraftingCalculations {
 				.levels[this.characterStore.characterLevel + (critical ? 1 : 0)]
 				?.success
 				.get(this.characterStore.proficiencyLevel) ?? 0)
-				* (this.settingStore.rushFinishing ? 2 : 1)
+				* (this.settingStore.rushFinishing ? 2 : 1);
 
-	finalCalculation(): FinalTable {
+	calculateRow(day: number): TableRow {
 		const baseCost = this.itemStore.batchCost / 2;
-		const setupRows: TableRow = {
-			criticalSuccess: {
-				valueSpent: baseCost,
-				valueTotal: baseCost,
-				costRemaining: baseCost,
-			},
+
+		const dayAdjusted = Math.max(day - this.setupDays(), 0);
+		const successProgress  = this.earnIncomeLevel(false) * dayAdjusted
+		const criticalProgress = this.earnIncomeLevel(true ) * dayAdjusted
+
+		return {
+			day,
+			isSetup: day <= this.setupDays(),
 			success: {
 				valueSpent: baseCost,
-				valueTotal: baseCost,
-				costRemaining: baseCost,
+				valueTotal: Math.min(baseCost + successProgress, this.itemStore.batchCost),
+				costRemaining: Math.max(baseCost - successProgress, 0),
+			},
+			criticalSuccess: {
+				valueSpent: baseCost,
+				valueTotal: Math.min(baseCost + criticalProgress, this.itemStore.batchCost),
+				costRemaining: Math.max(baseCost - criticalProgress, 0),
 			}
 		}
+	}
 
-		const table: FinalTable = {
-			days: new Array(this.setupDays()).fill(setupRows)
-		}
+	* finalCalculation(): Generator<TableRow> {
+		for(let day = 1;; day++) {
+			const row = this.calculateRow(day);
+			yield row
 
-		const successIncome  = this.earnIncomeLevel(false)
-		const criticalIncome = this.earnIncomeLevel(true )
-
-		for(;;) {
-			let nextRow = structuredClone(table.days[table.days.length - 1])
-
-			nextRow.success.costRemaining -= successIncome
-			nextRow.success.valueTotal    += successIncome
-
-			if(nextRow.success.costRemaining < 0) {
-				nextRow.success.costRemaining = 0
-				nextRow.success.valueTotal    = this.itemStore.batchCost
-			}
-
-			if(nextRow.criticalSuccess.costRemaining > 0) {
-				nextRow.criticalSuccess.costRemaining -= criticalIncome
-				nextRow.criticalSuccess.valueTotal    += criticalIncome
-
-				if(nextRow.criticalSuccess.costRemaining < 0) {
-					nextRow.criticalSuccess.costRemaining = 0
-					nextRow.criticalSuccess.valueTotal    = this.itemStore.batchCost
-				}
-			}
-
-			table.days.push(nextRow)
-
-			if (nextRow.success.costRemaining <= 0)
+			if (row.success.costRemaining <= 0 && day >= this.setupDays())
 				break
 		}
-
-		return table;
 	}
 }
 
