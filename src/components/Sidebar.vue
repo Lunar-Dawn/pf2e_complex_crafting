@@ -2,14 +2,10 @@
 	<nav class="sidebar">
 		<router-link :to="{ name:'index' }">Calculator</router-link>
 		<router-link :to="{ name: 'about' }">About</router-link>
-
-		<EarnIncomeTable/>
 	</nav>
 </template>
 
 <script setup lang="ts">
-
-import EarnIncomeTable from "./EarnIncomeTable.vue";
 </script>
 
 <style scoped lang="scss">

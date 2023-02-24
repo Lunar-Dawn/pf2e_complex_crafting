@@ -19,7 +19,7 @@ import Sidebar from "./components/Sidebar.vue";
 	display: grid;
 
 	grid-template-rows: auto 1fr;
-	grid-template-columns: 30% 70%;
+	grid-template-columns: 15% 85%;
 
 	grid-template-areas:
 		"header header"
