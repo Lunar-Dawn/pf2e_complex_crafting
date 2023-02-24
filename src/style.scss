@@ -1,0 +1,33 @@
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	color-scheme: light dark;
+}
+
+body {
+	margin: 0;
+}
+
+a {
+	color: inherit;
+}
+
+.sliderWrapper {
+
+}
+.radioWrapper {
+	display: flex;
+	flex-direction: column;
+
+	.radioRow {
+
+	}
+}
+.checkboxWrapper {
+
+}
+.numberWrapper {
+
+}
