@@ -9,9 +9,9 @@ const router = createRouter({
 			component: () => import('./components/Calculator.vue')
 		},
 		{
-			name: 'about',
-			path: '/about',
-			component: () => import('./components/About.vue')
+			name: 'license',
+			path: '/license',
+			component: () => import('./components/License.vue')
 		}
 	]
 })
