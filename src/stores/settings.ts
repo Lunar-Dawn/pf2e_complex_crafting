@@ -8,6 +8,6 @@ export const useSettingStore = defineStore('settings', {
 		rushSetup: 0,
 		rushFinishing: false,
 
-		coinFormat: CoinFormat.DecimalGp,
+		coinFormat: CoinFormat.Separate,
 	})
 })

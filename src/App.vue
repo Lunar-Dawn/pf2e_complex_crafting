@@ -8,9 +8,9 @@ import Sidebar from "./components/Sidebar.vue";
 			Advanced Crafting Calculator
 		</header>
 		<Sidebar/>
-		<main>
+		<div id="main-wrapper">
 			<router-view/>
-		</main>
+		</div>
 	</article>
 </template>
 
@@ -40,7 +40,7 @@ header {
 
 	grid-area: header;
 }
-main {
+#main-wrapper {
 	padding: .3em;
 
 	overflow: auto;

@@ -14,10 +14,17 @@ a {
 	color: inherit;
 }
 
-.sliderWrapper {
+.slider-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 7ch;
 
+	align-items: center;
+
+	.value-display {
+		text-align: center;
+	}
 }
-.radioWrapper {
+.radio-wrapper {
 	display: flex;
 	flex-direction: column;
 
@@ -25,9 +32,13 @@ a {
 
 	}
 }
-.checkboxWrapper {
+.checkbox-wrapper {
 
 }
-.numberWrapper {
+.number-wrapper {
 
+}
+
+.col-span-2 {
+	grid-row: auto / span 2;
 }

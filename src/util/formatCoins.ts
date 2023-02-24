@@ -8,19 +8,25 @@ export enum CoinFormat {
 	Separate,
 }
 
-function separateFormatting(cp: number): string {
-	let coins: string[] = []
-
+// Splits cp into [gp, sp, cp]
+export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
 	const gp = Math.floor(cp / 100)
 	cp %= 100
-	if (gp)
-		coins.push(`${gp} gp`)
-
 	const sp = Math.floor(cp / 10)
 	cp %= 10
+
+	return {gp, sp, cp}
+}
+
+function separateFormatting(value: number): string {
+	let coins: string[] = []
+
+	const {gp, sp, cp} = splitCoins(value);
+
+	if (gp)
+		coins.push(`${gp} gp`)
 	if(sp)
 		coins.push(`${sp} sp`)
-
 	if(cp)
 		coins.push(`${cp} cp`)
 
