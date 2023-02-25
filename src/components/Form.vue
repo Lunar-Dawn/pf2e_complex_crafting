@@ -62,9 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import CoinInput from "./CoinInput.vue";
-import SliderInput from "./SliderInput.vue";
-import RadioInput from "./RadioInput.vue";
+import CoinInput from "./input/CoinInput.vue";
+import SliderInput from "./input/SliderInput.vue";
+import RadioInput from "./input/RadioInput.vue";
 
 import { useCharacterStore } from "../stores/character";
 import { useItemStore } from "../stores/item";
