@@ -3,24 +3,24 @@
 		<legend>Item Price</legend>
 		<div>
 			<input type="number" id="gold"   min="0" v-model.number="gp">
-			<label for="gold">gp</label>
-		</div>
-		<div>
+			<label for="gold" class="coin-type">gp</label>
+
 			<input type="number" id="silver" min="0" v-model.number="sp">
-			<label for="silver">sp</label>
-		</div>
-		<div>
+			<label for="silver" class="coin-type">sp</label>
+
 			<input type="number" id="copper" min="0" v-model.number="cp">
-			<label for="copper">cp</label>
-		</div>
-		<div>
-			{{ formatCoins(copperComputed, CoinFormat.DecimalGp) }}
+			<label for="copper" class="coin-type">cp</label>
+
+			<div class="total-coins">
+				<span>{{ (copperComputed / 100).toFixed(2) }}</span>
+			</div>
+			<span class="coin-type">gp</span>
 		</div>
 	</fieldset>
 </template>
 
 <script setup lang="ts">
-import formatCoins, { CoinFormat, splitCoins } from "../util/formatCoins";
+import { splitCoins } from "../util/formatCoins";
 import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
@@ -43,27 +43,46 @@ watch(copperComputed, (value) => {
 
 <style scoped lang="scss">
 fieldset {
-	display: grid;
-	grid-template-columns: 25% 25% 25% 25%;
-	//flex-wrap: wrap;
+	> div {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr auto);
+		align-items: stretch;
 
-	text-align: right;
+		align-self: stretch;
 
-	div {
-		flex: 0 1 auto;
-		display: inline-flex;
-
-		justify-content: end;
+		border: 1px grey solid;
+		border-radius: 4px;
 
 		input {
-			padding: .5ch;
+			border: none;
+			background: none;
 
 			width: 100%;
-
-			text-align: right;
 		}
-		label {
-			margin: 0 1ch;
+
+		input, .total-coins {
+			text-align: right;
+
+			&:not(:first-child) {
+				border-left: 1px grey solid;
+			}
+		}
+
+		.coin-type {
+			align-self: center;
+		}
+
+		.total-coins {
+			display: flex;
+			align-items: center;
+
+			> span {
+				flex: 1;
+			}
+		}
+
+		> * {
+			padding: 0 .5ch;
 		}
 	}
 }
