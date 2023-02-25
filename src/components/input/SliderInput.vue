@@ -2,14 +2,16 @@
 	<fieldset class="wrapper">
 		<legend>{{ title }}</legend>
 		<label :for="id1" hidden>{{ title }}</label>
-		<input
-				type="range" :id="id1"
-				:min="min" :max="max" :step="step"
-				v-model.number="value"/>
-		<div class="value-display">
-			<label :for="id2" hidden>{{ title }}</label>
-			<input type="number" :id="id2" :min="min" :max="max" :step="step" v-model.number="value"/>
-			<slot/>
+		<div class="fieldset-content">
+			<input
+					type="range" :id="id1"
+					:min="min" :max="max" :step="step"
+					v-model.number="value"/>
+			<div class="value-display">
+				<label :for="id2" hidden>{{ title }}</label>
+				<input type="number" :id="id2" :min="min" :max="max" :step="step" v-model.number="value"/>
+				<slot/>
+			</div>
 		</div>
 	</fieldset>
 </template>
@@ -44,7 +46,7 @@ const value = computed({
 </script>
 
 <style scoped lang="scss">
-.wrapper {
+.fieldset-content {
 	display: grid;
 	grid-template-columns: 1fr 7ch;
 

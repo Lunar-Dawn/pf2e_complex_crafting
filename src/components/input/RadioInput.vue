@@ -1,12 +1,13 @@
 <template>
-	<fieldset class="wrapper">
+	<fieldset>
 		<legend>{{ title }}</legend>
-
-		<div class="options-wrapper">
-			<template v-for="entry in uuidRows()">
-				<input type="radio" :id="entry.uuid" v-model="value" :value="entry.optionValue" :disabled="entry.isDisabled?.()" hidden/>
-				<label :for="entry.uuid">{{ entry.title }}</label>
-			</template>
+		<div class="fieldset-content">
+			<div class="options-wrapper">
+				<template v-for="entry in uuidRows()">
+					<input type="radio" :id="entry.uuid" v-model="value" :value="entry.optionValue" :disabled="entry.isDisabled?.()" hidden/>
+					<label :for="entry.uuid">{{ entry.title }}</label>
+				</template>
+			</div>
 		</div>
 	</fieldset>
 </template>
@@ -58,10 +59,7 @@ const uuidRows = computed(() => {
 </script>
 
 <style scoped lang="scss">
-.wrapper {
-	flex-direction: column;
-	align-items: flex-start;
-
+.fieldset-content {
 	.options-wrapper {
 		border: 1px grey solid;
 		border-radius: 4px;
@@ -81,13 +79,17 @@ const uuidRows = computed(() => {
 	}
 }
 
-.format-row > .options-wrapper {
+.format-row .options-wrapper {
 	display: flex;
 	flex-wrap: wrap;
+
+	align-self: center;
 }
 
-.format-table > .options-wrapper {
+.format-table .options-wrapper {
 	display: grid;
 	grid-template-columns: auto;
+
+	align-self: flex-start;
 }
 </style>

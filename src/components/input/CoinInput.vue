@@ -1,7 +1,7 @@
 <template>
-	<fieldset class="number-wrapper">
+	<fieldset>
 		<legend>Item Price</legend>
-		<div>
+		<div class="fieldset-content">
 			<input type="number" id="gold"   min="0" v-model.number="gp">
 			<label for="gold" class="coin-type">gp</label>
 
@@ -42,48 +42,46 @@ watch(copperComputed, (value) => {
 </script>
 
 <style scoped lang="scss">
-fieldset {
-	> div {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr auto);
-		align-items: stretch;
+.fieldset-content {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr auto);
+	align-items: stretch;
 
-		align-self: stretch;
+	align-self: stretch;
 
-		border: 1px grey solid;
-		border-radius: 4px;
+	border: 1px grey solid;
+	border-radius: 4px;
 
-		input {
-			border: none;
-			background: none;
+	input {
+		border: none;
+		background: none;
 
-			width: 100%;
+		width: 100%;
+	}
+
+	input, .total-coins {
+		text-align: right;
+
+		&:not(:first-child) {
+			border-left: 1px grey solid;
 		}
+	}
 
-		input, .total-coins {
-			text-align: right;
+	.coin-type {
+		align-self: center;
+	}
 
-			&:not(:first-child) {
-				border-left: 1px grey solid;
-			}
+	.total-coins {
+		display: flex;
+		align-items: center;
+
+		> span {
+			flex: 1;
 		}
+	}
 
-		.coin-type {
-			align-self: center;
-		}
-
-		.total-coins {
-			display: flex;
-			align-items: center;
-
-			> span {
-				flex: 1;
-			}
-		}
-
-		> * {
-			padding: 0 .5ch;
-		}
+	> * {
+		padding: 0 .5ch;
 	}
 }
 </style>

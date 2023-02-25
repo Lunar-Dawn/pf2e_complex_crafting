@@ -14,12 +14,12 @@ a {
 	color: inherit;
 }
 
-fieldset {
-	min-height: 5em;
-
+.fieldset-content {
 	display: flex;
 	justify-content: stretch;
 	align-items: center;
+
+	min-height: 2.5em;
 }
 .checkbox-wrapper {
 

@@ -6,12 +6,16 @@
 	<fieldset class="number-wrapper">
 		<legend>Crafting Modifier</legend>
 		<label for="modifier" hidden>Crafting Modifier</label>
-		<input type="number" id="modifier" v-model.number="settingStore.craftingModifier"/>
+		<div class="fieldset-content">
+			<input type="number" id="modifier" v-model.number="settingStore.craftingModifier"/>
+		</div>
 	</fieldset>
 	<fieldset class="checkbox-wrapper">
 		<legend>Quick Setup</legend>
-		<input type="checkbox" id="hasQuickSetup" v-model="characterStore.hasQuickSetup">
-		<label for="hasQuickSetup">Character has Quick Setup</label>
+		<div class="fieldset-content">
+			<input type="checkbox" id="hasQuickSetup" v-model="characterStore.hasQuickSetup">
+			<label for="hasQuickSetup">Character has Quick Setup</label>
+		</div>
 	</fieldset>
 
 	<RadioInput class="format-table col-span-2" title="Proficiency Level" v-model="characterStore.proficiencyLevel" :entries="[
@@ -37,8 +41,10 @@
 	]"/>
 	<fieldset class="number-wrapper">
 		<legend>Batch Size</legend>
-		<label for="batchSize" hidden>Batch Size</label>
-		<input type="number" id="batchSize" min="1" v-model.number="itemStore.batchSize"/>
+		<div class="fieldset-content">
+			<label for="batchSize" hidden>Batch Size</label>
+			<input type="number" id="batchSize" min="1" v-model.number="itemStore.batchSize"/>
+		</div>
 	</fieldset>
 	<RadioInput class="format-row" title="Item Type" v-model="itemStore.isPermanent" :entries="[
 		{ title: 'Consumable', optionValue: false },
@@ -46,18 +52,22 @@
 	]"/>
 	<fieldset class="checkbox-wrapper">
 		<legend>Rushing</legend>
-		<input type="checkbox" id="rushFinishing" v-model="settingStore.rushFinishing">
-		<label for="rushFinishing">Rush Finishing</label>
+		<div class="fieldset-content">
+			<input type="checkbox" id="rushFinishing" v-model="settingStore.rushFinishing">
+			<label for="rushFinishing">Rush Finishing</label>
+		</div>
 	</fieldset>
 	<fieldset class="select-wrapper">
 		<legend>Coin Display Mode</legend>
 		<label for="coinDisplayMode" hidden>Coin Display Mode</label>
-		<select id="coinDisplayMode" v-model.number="settingStore.coinFormat">
-			<option :value="CoinFormat.Separate" >{{ formatCoins(123, CoinFormat.Separate) }}</option>
-			<option :value="CoinFormat.DecimalGp">{{ formatCoins(123, CoinFormat.DecimalGp) }}</option>
-			<option :value="CoinFormat.DecimalSp">{{ formatCoins(123, CoinFormat.DecimalSp) }}</option>
-			<option :value="CoinFormat.DecimalCp">{{ formatCoins(123, CoinFormat.DecimalCp) }}</option>
-		</select>
+		<div class="fieldset-content">
+			<select id="coinDisplayMode" v-model.number="settingStore.coinFormat">
+				<option :value="CoinFormat.Separate" >{{ formatCoins(123, CoinFormat.Separate) }}</option>
+				<option :value="CoinFormat.DecimalGp">{{ formatCoins(123, CoinFormat.DecimalGp) }}</option>
+				<option :value="CoinFormat.DecimalSp">{{ formatCoins(123, CoinFormat.DecimalSp) }}</option>
+				<option :value="CoinFormat.DecimalCp">{{ formatCoins(123, CoinFormat.DecimalCp) }}</option>
+			</select>
+		</div>
 	</fieldset>
 </template>
 
