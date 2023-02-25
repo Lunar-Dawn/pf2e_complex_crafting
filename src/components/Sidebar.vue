@@ -1,8 +1,8 @@
 <template>
 	<div class="sidebar-wrapper">
 		<nav class="sidebar">
-			<router-link :to="{ name:'index' }">Calculator</router-link>
-			<router-link :to="{ name: 'license' }">License</router-link>
+			<button @click="settingStore.setActiveTab(Tab.Calculator)" :class="{ active: settingStore.activeTab === Tab.Calculator }">Calculator</button>
+			<button @click="settingStore.setActiveTab(Tab.License)   " :class="{ active: settingStore.activeTab === Tab.License }   ">License</button>
 		</nav>
 		<p class="copyright">
 			Copyright &copy; 2023 Lunar Requiem
@@ -15,6 +15,9 @@
 </template>
 
 <script setup lang="ts">
+import { Tab, useSettingStore } from "../stores/settings";
+
+const settingStore = useSettingStore()
 </script>
 
 <style scoped lang="scss">
@@ -32,7 +35,17 @@
 
 		line-height: 2.5em;
 
-		margin-right: 1em;
+		button {
+			border: none;
+			font-size: 1em;
+			padding: 1em;
+
+			text-align: right;
+
+			&:not(.active):not(:hover) {
+				background: none;
+			}
+		}
 	}
 	.copyright {
 		margin-top: auto;

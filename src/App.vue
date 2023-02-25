@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import Sidebar from "./components/Sidebar.vue";
-</script>
-
 <template>
 	<article id="body-wrapper">
 		<header>
@@ -9,10 +5,21 @@ import Sidebar from "./components/Sidebar.vue";
 		</header>
 		<Sidebar/>
 		<div id="main-wrapper">
-			<router-view/>
+			<Calculator v-show="settingStore.activeTab === Tab.Calculator"/>
+			<License    v-show="settingStore.activeTab === Tab.License"/>
 		</div>
 	</article>
 </template>
+
+<script setup lang="ts">
+import Sidebar from "./components/Sidebar.vue";
+import Calculator from "./components/Calculator.vue";
+import License from "./components/License.vue";
+
+import { Tab, useSettingStore } from "./stores/settings";
+
+const settingStore = useSettingStore()
+</script>
 
 <style scoped lang="scss">
 #body-wrapper {
