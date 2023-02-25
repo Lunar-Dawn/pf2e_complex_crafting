@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import formatCoins, { CoinFormat, splitCoins } from "../util/formatCoins";
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
 	copperValue: number
@@ -31,11 +31,11 @@ const emit = defineEmits<{
 }>()
 
 const coins = splitCoins(props.copperValue)
-const cp = $ref(coins.cp)
-const sp = $ref(coins.sp)
-const gp = $ref(coins.gp)
+const cp = ref(coins.cp)
+const sp = ref(coins.sp)
+const gp = ref(coins.gp)
 
-const copperComputed = computed(() => gp * 100 + sp * 10 + cp)
+const copperComputed = computed(() => gp.value * 100 + sp.value * 10 + cp.value)
 watch(copperComputed, (value) => {
 	emit('update:copperValue', value)
 })

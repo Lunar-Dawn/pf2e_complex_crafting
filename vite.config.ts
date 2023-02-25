@@ -5,9 +5,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig(({command}) => {
 	return {
 		plugins: [
-			vue({
-				reactivityTransform: true,
-			})
+			vue()
 		],
 		base: command == 'build' ? '/pf2e_complex_crafting/' : '/',
 	}

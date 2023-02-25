@@ -30,10 +30,12 @@
 </template>
 
 <script setup lang="ts">
-import formatCoins from "../util/formatCoins";
+import { ref } from "vue";
 
+import formatCoins from "../util/formatCoins";
 import CraftingCalculations from "../util/craftingCalculation";
-const calculation = $ref(new CraftingCalculations())
+
+const calculation = ref(new CraftingCalculations())
 </script>
 
 <style scoped lang="scss">
