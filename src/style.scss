@@ -22,16 +22,6 @@ fieldset {
 	align-items: center;
 }
 
-.slider-wrapper {
-	display: grid;
-	grid-template-columns: 1fr 7ch;
-
-	align-items: center;
-
-	.value-display {
-		text-align: center;
-	}
-}
 .radio-wrapper {
 	flex-direction: column;
 	align-items: flex-start;

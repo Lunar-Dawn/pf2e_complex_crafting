@@ -1,26 +1,8 @@
 <template>
-	<fieldset class="slider-wrapper">
-		<legend>Character Level</legend>
-		<label for="characterLevel" hidden>Character Level</label>
-		<input
-				type="range" id="characterLevel"
-				min="1" max="20" step="1"
-				v-model.number="characterStore.characterLevel"/>
-		<div class="value-display">
-			{{ characterStore.characterLevel }}
-		</div>
-	</fieldset>
-	<fieldset class="slider-wrapper">
-		<legend>Intelligence Score</legend>
-		<input
-				type="range" id="intelligenceScore"
-				min="8" max="30" step="1"
-				v-model.number="characterStore.intScore"/>
-		<div class="value-display">
-			{{ characterStore.intScore }}
-			({{ characterStore.intMod === 0 ? '±' : '' }}{{ characterStore.intMod > 0 ? '+' : '' }}{{ characterStore.intMod }})
-		</div>
-	</fieldset>
+	<SliderInput title="Character Level"    :min="1" :max="20" :step="1" v-model="characterStore.characterLevel"/>
+	<SliderInput title="Intelligence Score" :min="6" :max="30" :step="1" v-model="characterStore.intScore">
+		({{ characterStore.intMod === 0 ? '±' : '' }}{{ characterStore.intMod > 0 ? '+' : '' }}{{ characterStore.intMod }})
+	</SliderInput>
 	<fieldset class="number-wrapper">
 		<legend>Crafting Modifier</legend>
 		<label for="modifier" hidden>Crafting Modifier</label>
@@ -67,17 +49,7 @@
 		</div>
 	</fieldset>
 
-	<fieldset class="slider-wrapper">
-		<legend>Item Level</legend>
-		<label for="itemLevel" hidden>Item Level</label>
-		<input
-				type="range" id="itemLevel"
-				min="0" max="25" step="1"
-				v-model.number="itemStore.itemLevel"/>
-		<div class="value-display">
-			{{ itemStore.itemLevel }}
-		</div>
-	</fieldset>
+	<SliderInput title="Item Level" :min="0" :max="25" :step="1" v-model="itemStore.itemLevel"/>
 	<CoinInput v-model:copper-value="itemStore.itemCost"/>
 	<fieldset class="radio-wrapper col-span-2">
 		<legend>Rarity</legend>
@@ -112,7 +84,7 @@
 			<label for="isPermanentTrue">Permanent</label>
 		</div>
 	</fieldset>
-	<fieldset class="checkbox-wrapper col-span-2">
+	<fieldset class="checkbox-wrapper">
 		<legend>Rushing</legend>
 		<input type="checkbox" id="rushFinishing" v-model="settingStore.rushFinishing">
 		<label for="rushFinishing">Rush Finishing</label>
@@ -139,6 +111,7 @@ import { useSettingStore } from "../stores/settings";
 import { ProficiencyLevel } from "../util/proficiency";
 import { Rarity } from "../util/rarity";
 import formatCoins, { CoinFormat } from "../util/formatCoins";
+import SliderInput from "./SliderInput.vue";
 
 const characterStore = useCharacterStore();
 const itemStore = useItemStore()
