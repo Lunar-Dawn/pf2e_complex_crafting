@@ -35,40 +35,34 @@
 	<fieldset class="radio-wrapper col-span-2">
 		<legend>Proficiency Level</legend>
 
-		<div class="radioRow">
-			<input type="radio" id="trained"   v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Trained"/>
+		<div class="radio-options-wrapper radio-options-table">
+			<input type="radio" id="trained"   v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Trained" hidden/>
 			<label for="trained">Trained</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="expert"    v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Expert"/>
+
+			<input type="radio" id="expert"    v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Expert" hidden/>
 			<label for="expert">Expert</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="master"    v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Master"/>
+
+			<input type="radio" id="master"    v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Master" hidden/>
 			<label for="master">Master</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="legendary" v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Legendary"/>
+
+			<input type="radio" id="legendary" v-model.number="characterStore.proficiencyLevel" :value="ProficiencyLevel.Legendary" hidden/>
 			<label for="legendary">Legendary</label>
 		</div>
 	</fieldset>
 	<fieldset class="radio-wrapper col-span-2">
 		<legend>Rush Setup</legend>
 
-		<div class="radioRow">
-			<input type="radio" id="trainedRushSetup" v-model="settingStore.rushSetup" :value="0"/>
+		<div class="radio-options-wrapper radio-options-table">
+			<input type="radio" id="trainedRushSetup" v-model="settingStore.rushSetup" :value="0" hidden/>
 			<label for="trainedRushSetup">Don't Rush Setup</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="expertRushSetup" v-model="settingStore.rushSetup" :value="1" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Expert"/>
+
+			<input type="radio" id="expertRushSetup" v-model="settingStore.rushSetup" :value="1" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Expert" hidden/>
 			<label for="expertRushSetup">Expert: +5 DC, -1 Days Setup</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="masterRushSetup" v-model="settingStore.rushSetup" :value="2" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Master"/>
+
+			<input type="radio" id="masterRushSetup" v-model="settingStore.rushSetup" :value="2" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Master" hidden/>
 			<label for="masterRushSetup">Master: +10 DC, -2 Days Setup</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="legendaryRushSetup" v-model="settingStore.rushSetup" :value="3" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Legendary"/>
+
+			<input type="radio" id="legendaryRushSetup" v-model="settingStore.rushSetup" :value="3" :disabled="characterStore.proficiencyLevel < ProficiencyLevel.Legendary" hidden/>
 			<label for="legendaryRushSetup">Legendary: +15 DC, -3 Days Setup</label>
 		</div>
 	</fieldset>
@@ -87,20 +81,18 @@
 	<CoinInput v-model:copper-value="itemStore.itemCost"/>
 	<fieldset class="radio-wrapper col-span-2">
 		<legend>Rarity</legend>
-		<div class="radioRow">
-			<input type="radio" id="common"   v-model.number="itemStore.rarity" :value="Rarity.Common"/>
+
+		<div class="radio-options-wrapper radio-options-table">
+			<input type="radio" id="common"   v-model.number="itemStore.rarity" :value="Rarity.Common" hidden/>
 			<label for="common">Common (±0)</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="uncommon"    v-model.number="itemStore.rarity" :value="Rarity.Uncommon"/>
+
+			<input type="radio" id="uncommon"    v-model.number="itemStore.rarity" :value="Rarity.Uncommon" hidden/>
 			<label for="uncommon">Uncommon (+2)</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="rare"    v-model.number="itemStore.rarity" :value="Rarity.Rare"/>
+
+			<input type="radio" id="rare"    v-model.number="itemStore.rarity" :value="Rarity.Rare" hidden/>
 			<label for="rare">Rare (+5)</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="unique" v-model.number="itemStore.rarity" :value="Rarity.Unique"/>
+
+			<input type="radio" id="unique" v-model.number="itemStore.rarity" :value="Rarity.Unique" hidden/>
 			<label for="unique">Unique (+10)</label>
 		</div>
 	</fieldset>
@@ -111,12 +103,12 @@
 	</fieldset>
 	<fieldset class="radio-wrapper">
 		<legend>Item Type</legend>
-		<div class="radioRow">
-			<input type="radio" id="isPermanentFalse" v-model="itemStore.isPermanent" :value="false"/>
+
+		<div class="radio-options-wrapper radio-options-row">
+			<input type="radio" id="isPermanentFalse" v-model="itemStore.isPermanent" :value="false" hidden/>
 			<label for="isPermanentFalse">Consumable</label>
-		</div>
-		<div class="radioRow">
-			<input type="radio" id="isPermanentTrue" v-model="itemStore.isPermanent" :value="true"/>
+
+			<input type="radio" id="isPermanentTrue" v-model="itemStore.isPermanent" :value="true" hidden/>
 			<label for="isPermanentTrue">Permanent</label>
 		</div>
 	</fieldset>
