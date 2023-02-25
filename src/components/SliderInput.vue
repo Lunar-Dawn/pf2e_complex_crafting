@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="slider-wrapper">
+	<fieldset class="wrapper">
 		<legend>{{ title }}</legend>
 		<label :for="id1" hidden>{{ title }}</label>
 		<input
@@ -44,7 +44,7 @@ const value = computed({
 </script>
 
 <style scoped lang="scss">
-.slider-wrapper {
+.wrapper {
 	display: grid;
 	grid-template-columns: 1fr 7ch;
 
