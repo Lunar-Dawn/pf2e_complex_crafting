@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar.vue";
 <template>
 	<article id="body-wrapper">
 		<header>
-			Advanced Crafting Calculator
+			Pathfinder 2e Complex Crafting Calculator
 		</header>
 		<Sidebar/>
 		<div id="main-wrapper">
