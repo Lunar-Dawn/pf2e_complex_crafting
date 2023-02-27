@@ -4,14 +4,14 @@
 			<Form/>
 		</div>
 		<aside>
-			<Results/>
+			<CostTable/>
 		</aside>
 	</main>
 </template>
 
 <script setup lang="ts">
 import Form from "./Form.vue";
-import Results from "./Results.vue";
+import CostTable from "./CostTable.vue";
 </script>
 
 <style scoped lang="scss">
