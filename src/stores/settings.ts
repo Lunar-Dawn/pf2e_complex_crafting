@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { CoinFormat } from "../util/formatCoins";
+import { CoinFormat } from "../util/format";
 
 export enum Tab {
 	Calculator,

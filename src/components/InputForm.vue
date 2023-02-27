@@ -1,7 +1,7 @@
 <template>
 	<SliderInput title="Character Level"    :min="1" :max="20" :step="1" v-model="characterStore.characterLevel"/>
 	<SliderInput title="Intelligence Score" :min="6" :max="30" :step="1" v-model="characterStore.intScore">
-		({{ characterStore.intMod === 0 ? '±' : '' }}{{ characterStore.intMod > 0 ? '+' : '' }}{{ characterStore.intMod }})
+		({{ signSymbol(characterStore.intMod) }}{{ characterStore.intMod }})
 	</SliderInput>
 	<fieldset class="number-wrapper">
 		<legend>Crafting Modifier</legend>
@@ -83,7 +83,7 @@ import { useSettingStore } from "../stores/settings";
 
 import { ProficiencyLevel } from "../util/proficiency";
 import { Rarity } from "../util/rarity";
-import formatCoins, { CoinFormat } from "../util/formatCoins";
+import { CoinFormat, formatCoins, signSymbol } from "../util/format";
 
 const characterStore = useCharacterStore();
 const calculationStore = useCalculationStore();

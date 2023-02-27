@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import formatCoins from "../util/formatCoins";
+import { formatCoins } from "../util/format";
 
 import { useCalculationStore } from "../stores/calculation";
 

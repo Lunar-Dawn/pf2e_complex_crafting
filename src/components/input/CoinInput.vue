@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { splitCoins } from "../../util/formatCoins";
+import { splitCoins } from "../../util/misc";
 import { computed, ref, watch } from "vue";
 
 const props = defineProps<{

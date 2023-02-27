@@ -1,21 +1,13 @@
 import { useSettingStore } from "../stores/settings";
 
+import { splitCoins } from "./misc";
+
 export enum CoinFormat {
 	Default,
 	DecimalCp,
 	DecimalSp,
 	DecimalGp,
 	Separate,
-}
-
-// Splits cp into [gp, sp, cp]
-export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
-	const gp = Math.floor(cp / 100)
-	cp %= 100
-	const sp = Math.floor(cp / 10)
-	cp %= 10
-
-	return {gp, sp, cp}
 }
 
 function separateFormatting(value: number): string {
@@ -33,7 +25,7 @@ function separateFormatting(value: number): string {
 	return coins.join(', ')
 }
 
-function formatCoins(cp: number, format: CoinFormat = CoinFormat.Default): string {
+export function formatCoins(cp: number, format: CoinFormat = CoinFormat.Default): string {
 	if (cp == 0)
 		return '—'
 
@@ -51,4 +43,13 @@ function formatCoins(cp: number, format: CoinFormat = CoinFormat.Default): strin
 	}
 }
 
-export default formatCoins
+export function signSymbol(n: number): string {
+	switch (Math.sign(n)) {
+		case 1:
+			return '+'
+		case -1:
+			return ''
+		default:
+			return '±'
+	}
+}

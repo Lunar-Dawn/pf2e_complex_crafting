@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import earnIncomeValues from "../util/earnIncomeTable";
-import formatCoins from "../util/formatCoins";
+import { formatCoins } from "../util/format";
 import { ProficiencyLevel } from "../util/proficiency";
 </script>
 
