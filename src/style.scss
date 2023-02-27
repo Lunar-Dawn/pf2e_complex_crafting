@@ -31,3 +31,7 @@ a {
 .col-span-2 {
 	grid-row: auto / span 2;
 }
+
+.row-span-2 {
+	grid-column: auto / span 2;
+}

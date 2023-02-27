@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 
 import { useCharacterStore } from "./character";
 import { useItemStore } from "./item";
+import { rollOutcome } from "../util/misc";
 
 interface SuccessDay {
 	valueSpent: number, // Half the original cost
@@ -26,7 +27,6 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const rushFinishing = ref(false)
 	const rushSetup = ref(0)
 
-	const setUpCost = computed(() => itemStore.batchCost / 2)
 	const setupDays = computed(() => {
 		const levelDifference = itemStore.itemLevel - characterStore.characterLevel;
 
@@ -48,11 +48,34 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 
 		return nDays
 	})
-
 	function costSavedPerDay(critical: boolean = false) {
 		return characterStore.earnIncomeLevel(critical)
 			* (rushFinishing.value ? 2 : 1);
 	}
+
+	const rushModifier = computed(() => rushSetup.value * 5)
+	const finalDC = computed(() => itemStore.getDC + rushModifier.value)
+
+	const finalCraftingMod = computed(() => characterStore.rollModifier + craftingModifier.value)
+
+	const finishRushDC = computed(() => 10 - characterStore.totalProficiency + itemStore.itemLevel)
+
+	const outcomeChances = computed((): {criticalSuccess: number, success: number, failure: number, criticalFailure: number, outcomes: number[]} => {
+		const outcomes = [...Array(20).keys()]
+			.map(x => ++x)
+			.map(x => rollOutcome(x, finalCraftingMod.value, finalDC.value))
+
+		return {
+			criticalFailure: outcomes.filter((x) => x == 0).length,
+			failure:         outcomes.filter((x) => x == 1).length,
+			success:         outcomes.filter((x) => x == 2).length,
+			criticalSuccess: outcomes.filter((x) => x == 3).length,
+			outcomes,
+		};
+	})
+
+	// Helpers for the final table
+	const setUpCost = computed(() => itemStore.batchCost / 2)
 
 	// Cache the massive table lookup
 	const successPerDay  = computed(() => costSavedPerDay(false))
@@ -90,7 +113,7 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 
 	return {
 		craftingModifier, rushFinishing, rushSetup,
-		setupDays,
+		setupDays, rushModifier, finalDC, finalCraftingMod, outcomeChances, finishRushDC,
 		costSavedPerDay, finalTable,
 	}
 })

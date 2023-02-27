@@ -7,3 +7,29 @@ export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
 
 	return {gp, sp, cp}
 }
+
+export enum Outcome {
+	CriticalFailure,
+	Failure,
+	Success,
+	CriticalSuccess,
+}
+export function baseRollOutcome (roll: number, dc: number): Outcome {
+	const delta = roll - dc
+
+	if(delta <= -9)
+		return Outcome.CriticalFailure
+	if(delta <= -1)
+		return Outcome.Failure
+	if(delta <= 9)
+		return Outcome.Success
+	return Outcome.CriticalSuccess
+}
+export function rollOutcome(roll: number, modifier: number, dc: number): Outcome {
+	const result = roll + modifier;
+	if(roll == 1)
+		return Math.max(baseRollOutcome(result, dc) - 1, Outcome.CriticalFailure)
+	if(roll == 20)
+		return Math.min(baseRollOutcome(result, dc) + 1, Outcome.CriticalSuccess)
+	return baseRollOutcome(result, dc)
+}

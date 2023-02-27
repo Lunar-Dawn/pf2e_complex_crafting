@@ -23,6 +23,9 @@ export const useCharacterStore = defineStore('character', {
 					?.success
 					.get(this.proficiencyLevel) ?? 0
 			}
-		}
+		},
+		assuranceResult(): number {
+			return 10 + this.totalProficiency;
+		},
 	}
 })
