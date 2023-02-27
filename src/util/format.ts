@@ -53,3 +53,7 @@ export function signSymbol(n: number): string {
 			return '±'
 	}
 }
+
+export function signNumber(n: number) {
+	return signSymbol(n) + n;
+}
