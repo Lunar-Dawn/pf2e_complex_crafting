@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<div class="form-grid">
-			<Form/>
+			<InputForm/>
 		</div>
 		<aside>
 			<CostTable/>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Form from "./Form.vue";
+import InputForm from "./InputForm.vue";
 import CostTable from "./CostTable.vue";
 </script>
 

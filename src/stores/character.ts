@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 
 import { ProficiencyLevel } from "../util/proficiency";
+import earnIncomeTable from "../util/earnIncomeTable";
 
 export const useCharacterStore = defineStore('character', {
 	state: () => ({
@@ -15,5 +16,13 @@ export const useCharacterStore = defineStore('character', {
 		rollModifier(): number {
 			return this.totalProficiency + this.intMod;
 		},
+		earnIncomeLevel(): (critical: boolean) => number {
+			return (critical: boolean): number => {
+				return earnIncomeTable
+					.levels[this.characterLevel + (critical ? 1 : 0)]
+					?.success
+					.get(this.proficiencyLevel) ?? 0
+			}
+		}
 	}
 })

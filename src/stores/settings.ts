@@ -8,10 +8,6 @@ export enum Tab {
 
 export const useSettingStore = defineStore('settings', {
 	state: () => ({
-		craftingModifier: 0,
-		rushSetup: 0,
-		rushFinishing: false,
-
 		coinFormat: CoinFormat.Separate,
 
 		activeTab: Tab.Calculator,

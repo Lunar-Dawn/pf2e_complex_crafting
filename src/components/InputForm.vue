@@ -7,7 +7,7 @@
 		<legend>Crafting Modifier</legend>
 		<label for="modifier" hidden>Crafting Modifier</label>
 		<div class="fieldset-content">
-			<input type="number" id="modifier" v-model.number="settingStore.craftingModifier"/>
+			<input type="number" id="modifier" v-model.number="calculationStore.craftingModifier"/>
 		</div>
 	</fieldset>
 	<fieldset class="checkbox-wrapper">
@@ -24,7 +24,7 @@
 		{ title: 'Master',    optionValue: ProficiencyLevel.Master    },
 		{ title: 'Legendary', optionValue: ProficiencyLevel.Legendary },
 	]"/>
-	<RadioInput class="format-table col-span-2" title="Rush Setup" v-model="settingStore.rushSetup" :entries="[
+	<RadioInput class="format-table col-span-2" title="Rush Setup" v-model="calculationStore.rushSetup" :entries="[
 		{ title: 'Don\'t Rush Setup',                optionValue: 0 },
 		{ title: 'Expert: +5 DC, -1 Days Setup',     optionValue: 1, isDisabled: () => characterStore.proficiencyLevel < ProficiencyLevel.Expert },
 		{ title: 'Master: +10 DC, -2 Days Setup',    optionValue: 2, isDisabled: () => characterStore.proficiencyLevel < ProficiencyLevel.Master },
@@ -53,7 +53,7 @@
 	<fieldset class="checkbox-wrapper">
 		<legend>Rushing</legend>
 		<div class="fieldset-content">
-			<input type="checkbox" id="rushFinishing" v-model="settingStore.rushFinishing">
+			<input type="checkbox" id="rushFinishing" v-model="calculationStore.rushFinishing">
 			<label for="rushFinishing">Rush Finishing</label>
 		</div>
 	</fieldset>
@@ -77,6 +77,7 @@ import SliderInput from "./input/SliderInput.vue";
 import RadioInput from "./input/RadioInput.vue";
 
 import { useCharacterStore } from "../stores/character";
+import { useCalculationStore } from "../stores/calculation";
 import { useItemStore } from "../stores/item";
 import { useSettingStore } from "../stores/settings";
 
@@ -85,6 +86,7 @@ import { Rarity } from "../util/rarity";
 import formatCoins, { CoinFormat } from "../util/formatCoins";
 
 const characterStore = useCharacterStore();
+const calculationStore = useCalculationStore();
 const itemStore = useItemStore()
 const settingStore = useSettingStore()
 </script>

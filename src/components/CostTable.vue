@@ -3,8 +3,8 @@
 		<thead>
 			<tr>
 				<th rowspan="2">Day</th>
-				<th colspan="3">Critical Success ({{ formatCoins(calculation.earnIncomeLevel(true)) }}/day)</th>
-				<th colspan="3">Success ({{ formatCoins(calculation.earnIncomeLevel(false)) }}/day)</th>
+				<th colspan="3">Critical Success ({{ formatCoins(calculationStore.costSavedPerDay(true)) }}/day)</th>
+				<th colspan="3">Success ({{ formatCoins(calculationStore.costSavedPerDay(false)) }}/day)</th>
 			</tr>
 			<tr>
 				<th>Spent</th>
@@ -16,7 +16,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="row in calculation.finalCalculation()" :class="{ setup: row.isSetup }">
+			<tr v-for="row in calculationStore.finalTable()" :class="{ setup: row.isSetup }">
 				<th>{{ row.day }}</th>
 				<td>{{ formatCoins(row.criticalSuccess.valueSpent) }}</td>
 				<td>{{ formatCoins(row.criticalSuccess.valueTotal) }}</td>
@@ -30,12 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 import formatCoins from "../util/formatCoins";
-import CraftingCalculations from "../util/craftingCalculation";
 
-const calculation = ref(new CraftingCalculations())
+import { useCalculationStore } from "../stores/calculation";
+
+const calculationStore = useCalculationStore();
 </script>
 
 <style scoped lang="scss">
