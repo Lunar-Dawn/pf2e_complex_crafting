@@ -1,3 +1,5 @@
+import { ref, Ref, watch } from "vue";
+
 // Splits cp into [gp, sp, cp]
 export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
 	const gp = Math.floor(cp / 100)
@@ -7,7 +9,6 @@ export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
 
 	return {gp, sp, cp}
 }
-
 export enum Outcome {
 	CriticalFailure,
 	Failure,
@@ -32,4 +33,15 @@ export function rollOutcome(roll: number, modifier: number, dc: number): Outcome
 	if(roll == 20)
 		return Math.min(baseRollOutcome(result, dc) + 1, Outcome.CriticalSuccess)
 	return baseRollOutcome(result, dc)
+}
+export function localStorageRef<T>(key: string, defaultValue: T): Ref<T> {
+	const storedValue = localStorage.getItem(key);
+
+	const boundRef = ref(storedValue === null ? defaultValue : JSON.parse(storedValue) as T) as Ref<T>;
+
+	watch(boundRef, () => {
+		localStorage.setItem('coinFormat', JSON.stringify(boundRef.value))
+	})
+
+	return boundRef;
 }
