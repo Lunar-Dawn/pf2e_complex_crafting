@@ -3,8 +3,8 @@
 		<thead>
 			<tr>
 				<th rowspan="2">Day</th>
-				<th colspan="3">Critical Success ({{ formatCoins(calculationStore.costSavedPerDay(true)) }}/day)</th>
 				<th colspan="3">Success ({{ formatCoins(calculationStore.costSavedPerDay(false)) }}/day)</th>
+				<th colspan="3">Critical Success ({{ formatCoins(calculationStore.costSavedPerDay(true)) }}/day)</th>
 			</tr>
 			<tr>
 				<th>Spent</th>
@@ -18,12 +18,14 @@
 		<tbody>
 			<tr v-for="row in calculationStore.finalTable()" :class="{ setup: row.isSetup }">
 				<th>{{ row.day }}</th>
-				<td>{{ formatCoins(row.criticalSuccess.valueSpent) }}</td>
-				<td>{{ formatCoins(row.criticalSuccess.valueTotal) }}</td>
-				<td>{{ formatCoins(row.criticalSuccess.costRemaining) }}</td>
+
 				<td>{{ formatCoins(row.success.valueSpent) }}</td>
 				<td>{{ formatCoins(row.success.valueTotal) }}</td>
 				<td>{{ formatCoins(row.success.costRemaining) }}</td>
+
+				<td>{{ formatCoins(row.criticalSuccess.valueSpent) }}</td>
+				<td>{{ formatCoins(row.criticalSuccess.valueTotal) }}</td>
+				<td>{{ formatCoins(row.criticalSuccess.costRemaining) }}</td>
 			</tr>
 		</tbody>
 	</table>
