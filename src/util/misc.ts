@@ -1,4 +1,5 @@
 import { ref, Ref, watch } from "vue";
+import { Base64 } from "js-base64";
 
 // Splits cp into [gp, sp, cp]
 export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {
@@ -44,4 +45,25 @@ export function localStorageRef<T>(key: string, defaultValue: T): Ref<T> {
 	})
 
 	return boundRef;
+}
+
+function getUrlValue<T>(key: string): T {
+	return JSON.parse(Base64.decode(location.hash) || "{}")[key] as T;
+}
+function setUrlValue<T>(key: string, value: T) {
+	const data = JSON.parse(Base64.decode(location.hash) || "{}")
+	data[key] = value
+	location.hash = Base64.encodeURL(JSON.stringify(data))
+}
+
+export function urlRef<T>(key: string, defaultValue: T): Ref<T> {
+	const storedValue = getUrlValue(key) as T
+
+	const boundRef = ref(storedValue === undefined ? defaultValue : storedValue) as Ref<T>;
+
+	watch(boundRef, (newValue) => {
+		setUrlValue(key, newValue)
+	})
+
+	return boundRef
 }
