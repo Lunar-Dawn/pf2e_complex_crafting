@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 
 import { useCharacterStore } from "./character";
 import { useItemStore } from "./item";
-import { rollOutcome, urlRef } from "../util/misc";
+import { rollOutcome, URLPos, urlRef } from "../util/misc";
 
 interface SuccessDay {
 	valueSpent: number, // Half the original cost
@@ -23,9 +23,9 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const characterStore = useCharacterStore()
 	const itemStore = useItemStore()
 
-	const craftingModifier = urlRef('craftingModifier', 0)
-	const rushFinishing = urlRef('rushFinishing', false)
-	const rushSetup = urlRef('rushSetup', 0)
+	const craftingModifier = urlRef(URLPos.CraftingModifier, 0)
+	const rushFinishing = urlRef(URLPos.RushFinishing, false)
+	const rushSetup = urlRef(URLPos.RushSetup, 0)
 
 	const setupDays = computed(() => {
 		const levelDifference = itemStore.itemLevel - characterStore.characterLevel;
