@@ -16,17 +16,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="row in calculationStore.finalTable()" :class="{ setup: row.isSetup }">
-				<th>{{ row.day }}</th>
+			<template v-if="calculationStore.daysRequiredSuccess <= veryBigTableSize">
+				<CostTableRow v-for="row in calculationStore.finalTable()" :row="row"/>
+			</template>
+			<template v-else>
+				<CostTableRow v-for="day in calculationStore.setupDays" :row="calculationStore.calculateRow(day)"/>
+				<CostTableRow v-for="day in 5" :row="calculationStore.calculateRow(day + calculationStore.setupDays)"/>
 
-				<td>{{ formatCoins(row.success.valueSpent) }}</td>
-				<td>{{ formatCoins(row.success.valueTotal) }}</td>
-				<td>{{ formatCoins(row.success.costRemaining) }}</td>
+				<tr class="snip">
+					<td colspan="7"> — snip — </td>
+				</tr>
 
-				<td>{{ formatCoins(row.criticalSuccess.valueSpent) }}</td>
-				<td>{{ formatCoins(row.criticalSuccess.valueTotal) }}</td>
-				<td>{{ formatCoins(row.criticalSuccess.costRemaining) }}</td>
-			</tr>
+				<CostTableRow v-for="day in 2" :row="calculationStore.calculateRow(day + calculationStore.daysRequiredCritical - 2)"/>
+
+				<tr class="snip">
+					<td colspan="7"> — snip — </td>
+				</tr>
+
+				<CostTableRow v-for="day in 2" :row="calculationStore.calculateRow(day + calculationStore.daysRequiredSuccess - 2)"/>
+			</template>
 		</tbody>
 	</table>
 </template>
@@ -35,8 +43,12 @@
 import { formatCoins } from "../util/format";
 
 import { useCalculationStore } from "../stores/calculation";
+import CostTableRow from "./CostTableRow.vue";
 
 const calculationStore = useCalculationStore();
+
+// Number of days before we snip the table
+const veryBigTableSize = 1000;
 </script>
 
 <style scoped lang="scss">
@@ -49,20 +61,27 @@ table {
 		padding: 2px 10px;
 	}
 
-	td {
+	:deep(td) {
 		padding: 0 10px;
 		text-align: right;
 	}
 
-	td, th {
+	:deep(td), :deep(th) {
 		border: 1px grey solid;
 	}
 
 	border-spacing: 0;
 	border-collapse: collapse;
 
-	tr.setup {
-		color: lightgray;
+	.snip {
+		background-color: grey;
+
+		td {
+			text-align: center;
+			font-style: italic;
+
+			color: darkgrey;
+		}
 	}
 }
 </style>

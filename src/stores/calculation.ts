@@ -12,11 +12,12 @@ interface SuccessDay {
 	costRemaining: number,
 }
 
-interface TableRow {
+export interface TableRow {
 	day: number,
 	isSetup: boolean,
 	criticalSuccess: SuccessDay,
 	success: SuccessDay,
+	isCompletion: boolean, // Is this a day when the remaining cost reaches 0 for success or critical
 }
 
 export const useCalculationStore = defineStore('craftingCalculation', () => {
@@ -81,6 +82,12 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const successPerDay  = computed(() => costSavedPerDay(false))
 	const criticalPerDay = computed(() => costSavedPerDay(true ))
 
+	function daysRequired(critical: boolean) {
+		return Math.ceil(setUpCost.value / costSavedPerDay(critical)) + setupDays.value
+	}
+	const daysRequiredSuccess = computed(() => daysRequired(false));
+	const daysRequiredCritical = computed(() => daysRequired(true));
+
 	function calculateRow(day: number): TableRow {
 		const dayAdjusted = Math.max(day - setupDays.value, 0);
 		const successProgress  = successPerDay.value  * dayAdjusted
@@ -98,11 +105,12 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 				valueSpent: setUpCost.value,
 				valueTotal: Math.min(setUpCost.value + criticalProgress, itemStore.batchCost),
 				costRemaining: Math.max(setUpCost.value - criticalProgress, 0),
-			}
+			},
+			isCompletion: day == daysRequiredSuccess.value || day == daysRequiredCritical.value
 		}
 	}
 	function* finalTable(): Generator<TableRow> {
-			for(let day = 1;; day++) {
+		for(let day = 1;; day++) {
 			const row = calculateRow(day);
 			yield row
 
@@ -113,7 +121,7 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 
 	return {
 		craftingModifier, rushFinishing, rushSetup,
-		setupDays, rushModifier, finalDC, finalCraftingMod, outcomeChances, finishRushDC,
-		costSavedPerDay, finalTable,
+		setupDays, rushModifier, finalDC, finalCraftingMod, outcomeChances, finishRushDC, daysRequiredSuccess, daysRequiredCritical,
+		costSavedPerDay, finalTable, calculateRow,
 	}
 })
