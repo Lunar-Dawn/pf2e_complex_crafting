@@ -5,11 +5,11 @@
 			<button @click="settingStore.setActiveTab(Tab.License)   " :class="{ active: settingStore.activeTab === Tab.License }   ">License</button>
 		</nav>
 		<p class="copyright">
-			Copyright &copy; 2023 Lunar Requiem
+			Copyright &copy; 2023 Lunar Dawn
 			<br/>
 			Licensed under the MIT license
 			<br/>
-			<a href="https://github.com/LunarRequiem/pf2e_complex_crafting">Source code available on GitHub</a>
+			<a href="https://github.com/Lunar-Dawn/pf2e_complex_crafting">Source code available on GitHub</a>
 		</p>
 	</div>
 </template>
