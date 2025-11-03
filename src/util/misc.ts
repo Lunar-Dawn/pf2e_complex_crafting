@@ -77,6 +77,7 @@ export function urlRef<T>(key: URLPos, defaultValue: T): Ref<T> {
 	const storedValue = getUrlValue(key) as T
 
 	const boundRef = ref(storedValue ?? defaultValue) as Ref<T>;
+	setUrlValue(key, boundRef.value)
 
 	watch(boundRef, (newValue) => {
 		setUrlValue(key, newValue)
