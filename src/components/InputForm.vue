@@ -1,7 +1,7 @@
 <template>
 	<SliderInput title="Character Level"    :min="1" :max="20" :step="1" v-model="characterStore.characterLevel"/>
-	<SliderInput title="Intelligence Score" :min="6" :max="30" :step="1" v-model="characterStore.intScore">
-		({{ signNumber(characterStore.intMod) }})
+	<SliderInput title="Intelligence Modifier" :min="-2" :max="+10" :step="1" v-model="characterStore.intModifier">
+		({{ signNumber(characterStore.intModifier) }})
 	</SliderInput>
 	<fieldset class="number-wrapper">
 		<legend>Crafting Modifier</legend>
