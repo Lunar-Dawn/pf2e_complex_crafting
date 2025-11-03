@@ -57,6 +57,13 @@
 			<label for="rushFinishing">Rush Finishing</label>
 		</div>
 	</fieldset>
+	<fieldset class="checkbox-wrapper">
+		<legend>Formula</legend>
+		<div class="fieldset-content">
+			<input type="checkbox" id="hasFormula" v-model="calculationStore.hasFormula">
+			<label for="hasFormula">Has formula</label>
+		</div>
+	</fieldset>
 	<fieldset class="select-wrapper">
 		<legend>Coin Display Mode</legend>
 		<label for="coinDisplayMode" hidden>Coin Display Mode</label>

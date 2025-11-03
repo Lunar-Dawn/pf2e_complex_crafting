@@ -61,6 +61,7 @@ export enum URLPos {
 	Rarity,
 	BatchSize,
 	IsPermanent,
+	HasFormula,
 }
 
 function getUrlValue<T>(key: URLPos): T {

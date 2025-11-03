@@ -27,13 +27,17 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const craftingModifier = urlRef(URLPos.CraftingModifier, 0)
 	const rushFinishing = urlRef(URLPos.RushFinishing, false)
 	const rushSetup = urlRef(URLPos.RushSetup, 0)
+	const hasFormula = urlRef(URLPos.HasFormula, false);
 
 	const setupDays = computed(() => {
 		const levelDifference = itemStore.itemLevel - characterStore.characterLevel;
 
-		let nDays = 4;
+		let nDays = 2;
 		if (itemStore.isPermanent)
 			nDays += 2;
+
+		if(hasFormula.value)
+			nDays -= 1;
 
 		if (characterStore.hasQuickSetup && levelDifference <= -6)
 			nDays -= 3
@@ -120,7 +124,7 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	}
 
 	return {
-		craftingModifier, rushFinishing, rushSetup,
+		craftingModifier, rushFinishing, rushSetup, hasFormula,
 		setupDays, rushModifier, finalDC, finalCraftingMod, outcomeChances, finishRushDC, daysRequiredSuccess, daysRequiredCritical,
 		costSavedPerDay, finalTable, calculateRow,
 	}
