@@ -19,8 +19,7 @@ export const useCharacterStore = defineStore('character', () => {
 	const assuranceResult = computed((): number => 10 + totalProficiency.value);
 
 	function earnIncomeLevel(critical: boolean): number {
-		return earnIncomeTable
-			.levels[characterLevel.value + (critical ? 1 : 0)]
+		return earnIncomeTable[characterLevel.value + (critical ? 1 : 0)]
 			?.success
 			.get(proficiencyLevel.value) ?? 0
 	}
