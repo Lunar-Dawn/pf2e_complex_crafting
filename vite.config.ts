@@ -7,6 +7,6 @@ export default defineConfig(({command}) => {
 		plugins: [
 			vue()
 		],
-		base: command == 'build' ? '/pf2e_complex_crafting/' : '/',
+		base: command === 'build' ? '/pf2e_complex_crafting/' : '/',
 	}
 })

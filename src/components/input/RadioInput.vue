@@ -1,22 +1,20 @@
 <template>
-	<fieldset>
-		<legend>{{ title }}</legend>
-		<div class="fieldset-content">
-			<div class="options-wrapper">
-				<template v-for="entry in uuidRows()">
-					<input type="radio" :id="entry.uuid" v-model="value" :value="entry.optionValue" :disabled="entry.isDisabled?.()" hidden/>
-					<label :for="entry.uuid">{{ entry.title }}</label>
-				</template>
-			</div>
-		</div>
-	</fieldset>
+	<div class="input-header">
+		<label class="header">
+			{{ title }}
+		</label>
+	</div>
+	<div class="options-layout" :class="{ 'narrow': narrow }">
+		<template v-for="entry in entries">
+			<label>
+				<input type="radio" v-model="value" :value="entry.optionValue" :disabled="entry.isDisabled?.()"/>
+				{{ entry.title }}
+			</label>
+		</template>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-
-import { v4 as uuid } from 'uuid';
-
 interface Entry {
 	title: string,
 	optionValue: any,
@@ -25,71 +23,75 @@ interface Entry {
 interface Props {
 	title: string,
 	modelValue: any,
-	entries: Entry[]
+	entries: Entry[],
+	narrow?: boolean,
 }
+defineProps<Props>()
 
-const props = defineProps<Props>()
-const emit = defineEmits<{
-	(e: 'update:modelValue', value: unknown): void,
-}>()
-
-const value = computed({
-	get() {
-		return props.modelValue
-	},
-	set(value) {
-		emit('update:modelValue', value)
-	}
-})
-const uuidRows = computed(() => {
-	return function* (): Generator<{
-		title: string,
-		optionValue: any,
-		isDisabled?: () => boolean,
-		uuid: string
-	}> {
-		for (const entry of props.entries) {
-			yield {
-				...entry,
-				uuid: uuid(),
-			}
-		}
-	}
-})
+const value = defineModel<any>({ required: true })
 </script>
 
 <style scoped lang="scss">
-.fieldset-content {
-	.options-wrapper {
-		border: 1px grey solid;
-		border-radius: 4px;
+@use "/src/assets/styles/_theme.scss";
 
-		input:checked + label {
-			background: dodgerblue;
+$row-border-radius: 25px;
+$table-border-radius: 5px;
+
+.options-layout {
+	display: grid;
+	margin-top: 10px;
+
+	border: 1px grey solid;
+
+	grid-auto-flow: column;
+	grid-auto-columns: 1fr;
+
+	border-radius: $row-border-radius;
+
+	width: 90%;
+
+	label {
+		padding: .25em 0;
+		text-align: center;
+
+		background: theme.$input-bg;
+
+		input {
+			position: absolute;
+			opacity: 0;
+			width: 0;
+			height: 0;
 		}
 
-		label {
-			padding: .2em 1ch;
-			white-space: nowrap;
+		&:first-child {
+			border-radius: $row-border-radius 0 0 $row-border-radius;
 		}
 
-		input:disabled + label {
+		&:last-child {
+			border-radius: 0 $row-border-radius $row-border-radius 0;
+		}
+
+		&:has(input:focus-visible) {
+			outline: 2px solid dodgerblue;
+		}
+
+		&:has(input:disabled) {
 			color: grey;
+		}
+		&:has(input:checked) {
+			background: theme.$highlight-color;
+			color: black;
 		}
 	}
 }
 
-.format-row .options-wrapper {
-	display: flex;
-	flex-wrap: wrap;
 
-	align-self: center;
-}
+.narrow {
+	width: unset;
 
-.format-table .options-wrapper {
-	display: grid;
-	grid-template-columns: auto;
-
-	align-self: flex-start;
+	label {
+		padding-left: 1ch;
+		padding-right: 1ch;
+	}
 }
 </style>

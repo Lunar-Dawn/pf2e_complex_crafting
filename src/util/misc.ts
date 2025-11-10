@@ -1,5 +1,5 @@
-import { ref, Ref, watch } from "vue";
 import { Base64 } from "js-base64";
+import { ref, Ref, watch } from "vue";
 
 // Splits cp into [gp, sp, cp]
 export function splitCoins(cp: number): {gp: number, sp: number, cp: number} {

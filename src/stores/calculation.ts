@@ -1,15 +1,15 @@
+import { defineStore } from "pinia";
 import { computed } from "vue";
 
-import { defineStore } from "pinia";
+import { baseRollOutcome, Outcome, rollOutcome, URLPos, urlRef } from "../util/misc";
 
 import { useCharacterStore } from "./character";
 import { useItemStore } from "./item";
-import { rollOutcome, URLPos, urlRef } from "../util/misc";
 
 interface SuccessDay {
-	valueSpent: number, // Half the original cost
 	valueTotal: number, // How much the item is worth now
 	costRemaining: number,
+	isCompletion: boolean,
 }
 
 export interface TableRow {
@@ -17,17 +17,15 @@ export interface TableRow {
 	isSetup: boolean,
 	criticalSuccess: SuccessDay,
 	success: SuccessDay,
-	isCompletion: boolean, // Is this a day when the remaining cost reaches 0 for success or critical
+	valueSpent: number, // Half the original cost
 }
 
 export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const characterStore = useCharacterStore()
 	const itemStore = useItemStore()
 
-	const craftingModifier = urlRef(URLPos.CraftingModifier, 0)
-	const rushFinishing = urlRef(URLPos.RushFinishing, false)
 	const rushSetup = urlRef(URLPos.RushSetup, 0)
-	const hasFormula = urlRef(URLPos.HasFormula, false);
+	const rushFinishing = urlRef(URLPos.RushFinishing, false)
 
 	const setupDays = computed(() => {
 		const levelDifference = itemStore.itemLevel - characterStore.characterLevel;
@@ -36,7 +34,7 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 		if (itemStore.isPermanent)
 			nDays += 2;
 
-		if(hasFormula.value)
+		if(itemStore.hasFormula)
 			nDays -= 1;
 
 		if (characterStore.hasQuickSetup && levelDifference <= -6)
@@ -48,8 +46,10 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 
 		nDays -= rushSetup.value;
 
-		// For the purposes of this calculator times below one day don't exist since there's no room for savings
-		nDays = Math.max(nDays, 1)
+		if(!itemStore.isPermanent && characterStore.hasQuickSetup && levelDifference <= -6 && rushSetup.value > 0)
+			nDays = Math.max(nDays, 0)
+		else
+			nDays = Math.max(nDays, 1)
 
 		return nDays
 	})
@@ -61,23 +61,20 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const rushModifier = computed(() => rushSetup.value * 5)
 	const finalDC = computed(() => itemStore.getDC + rushModifier.value)
 
-	const finalCraftingMod = computed(() => characterStore.rollModifier + craftingModifier.value)
-
 	const finishRushDC = computed(() => 10 - characterStore.totalProficiency + itemStore.itemLevel)
 
-	const outcomeChances = computed((): {criticalSuccess: number, success: number, failure: number, criticalFailure: number, outcomes: number[]} => {
-		const outcomes = [...Array(20).keys()]
-			.map(x => ++x)
-			.map(x => rollOutcome(x, finalCraftingMod.value, finalDC.value))
-
-		return {
-			criticalFailure: outcomes.filter((x) => x == 0).length,
-			failure:         outcomes.filter((x) => x == 1).length,
-			success:         outcomes.filter((x) => x == 2).length,
-			criticalSuccess: outcomes.filter((x) => x == 3).length,
-			outcomes,
-		};
+	const outcomeChances = computed((): { outcome: Outcome, total: number, roll: number }[] => {
+		return [...Array(20).keys()]
+			.map(x => x + 1)
+			.map(roll => ({
+					outcome: rollOutcome(roll, characterStore.craftingModifier, finalDC.value),
+					total: roll + characterStore.craftingModifier,
+					roll,
+				})
+			)
 	})
+
+	const assuranceOutcome = computed(() => baseRollOutcome(characterStore.assuranceResult, finalDC.value))
 
 	// Helpers for the final table
 	const setUpCost = computed(() => itemStore.batchCost / 2)
@@ -96,24 +93,28 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 		const dayAdjusted = Math.max(day - setupDays.value, 0);
 		const successProgress  = successPerDay.value  * dayAdjusted
 		const criticalProgress = criticalPerDay.value * dayAdjusted
+		const isSetup = day <= setupDays.value
 
 		return {
 			day,
-			isSetup: day <= setupDays.value,
+			isSetup,
+			valueSpent: setUpCost.value,
 			success: {
-				valueSpent: setUpCost.value,
 				valueTotal: Math.min(setUpCost.value + successProgress, itemStore.batchCost),
 				costRemaining: Math.max(setUpCost.value - successProgress, 0),
+				isCompletion: day == daysRequiredSuccess.value && !isSetup,
 			},
 			criticalSuccess: {
-				valueSpent: setUpCost.value,
 				valueTotal: Math.min(setUpCost.value + criticalProgress, itemStore.batchCost),
 				costRemaining: Math.max(setUpCost.value - criticalProgress, 0),
+				isCompletion: day == daysRequiredCritical.value && !isSetup,
 			},
-			isCompletion: day == daysRequiredSuccess.value || day == daysRequiredCritical.value
 		}
 	}
 	function* finalTable(): Generator<TableRow> {
+		if(setupDays.value === 0)
+			yield calculateRow(0);
+
 		for(let day = 1;; day++) {
 			const row = calculateRow(day);
 			yield row
@@ -124,8 +125,8 @@ export const useCalculationStore = defineStore('craftingCalculation', () => {
 	}
 
 	return {
-		craftingModifier, rushFinishing, rushSetup, hasFormula,
-		setupDays, rushModifier, finalDC, finalCraftingMod, outcomeChances, finishRushDC, daysRequiredSuccess, daysRequiredCritical,
-		costSavedPerDay, finalTable, calculateRow,
+		rushFinishing, rushSetup,
+		assuranceOutcome, setupDays, rushModifier, finalDC, outcomeChances, finishRushDC, daysRequiredSuccess, daysRequiredCritical,
+		costSavedPerDay, finalTable,
 	}
 })

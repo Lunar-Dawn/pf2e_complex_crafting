@@ -1,22 +1,21 @@
 <template>
-	<article id="body-wrapper">
-		<header>
-			Pathfinder 2e Complex Crafting Calculator
-		</header>
-		<Sidebar/>
+	<div id="body-wrapper">
+		<Navigation class="header"/>
 		<div id="main-wrapper">
 			<Calculator v-show="settingStore.activeTab === Tab.Calculator"/>
-			<License    v-show="settingStore.activeTab === Tab.License"/>
+			<Settings   v-show="settingStore.activeTab === Tab.Settings"/>
+			<About      v-show="settingStore.activeTab === Tab.About"/>
 		</div>
-	</article>
+	</div>
 </template>
 
 <script setup lang="ts">
-import Sidebar from "./components/Sidebar.vue";
+import Navigation from "./components/Navigation.vue";
 import Calculator from "./components/Calculator.vue";
-import License from "./components/License.vue";
+import About from "./components/About.vue";
 
 import { Tab, useSettingStore } from "./stores/settings";
+import Settings from "./components/Settings.vue";
 
 const settingStore = useSettingStore()
 </script>
@@ -26,30 +25,8 @@ const settingStore = useSettingStore()
 	display: grid;
 
 	grid-template-rows: auto 1fr;
-	grid-template-columns: 15% 85%;
-
-	grid-template-areas:
-		"header header"
-		"sidebar main";
-
-	height: 100vh;
-}
-header {
-	font-family: sans-serif;
-	font-weight: bold;
-	font-size: 1.5em;
-	border-bottom: 1px lightgrey solid;
-
-	text-align: center;
-	padding: .2em;
-
-	background-color: inherit;
-
-	grid-area: header;
 }
 #main-wrapper {
-	padding: .3em;
-
-	overflow: auto;
+	padding: 10px;
 }
 </style>

@@ -1,37 +1,54 @@
+@use "/src/assets/styles/_theme.scss";
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
 	box-sizing: border-box;
 }
 
 :root {
-	color-scheme: light dark;
+	color: white;
+	font-family: Roboto, sans-serif;
+}
+
+input, button {
+	color: white;
 }
 
 body {
 	margin: 0;
+	background: theme.$body-bg;
 }
 
 a {
 	color: inherit;
 }
 
-.fieldset-content {
-	display: flex;
-	justify-content: stretch;
-	align-items: center;
-
-	min-height: 2.5em;
-}
-.checkbox-wrapper {
-
-}
-.number-wrapper {
-
+.material-symbols-outlined {
+	user-select: none;
 }
 
-.col-span-2 {
-	grid-row: auto / span 2;
+.cs {
+	--bg-color: #{theme.$critical-success};
+}
+.s {
+	--bg-color: #{theme.$success};
+}
+.f {
+	--bg-color: #{theme.$failure};
+}
+.cf {
+	--bg-color: #{theme.$critical-failure};
 }
 
-.row-span-2 {
-	grid-column: auto / span 2;
+input[type=number] {
+	font-size: 1em;
+	outline: none;
+	appearance: textfield;
+	text-align: center;
+	border: none;
+
+	&::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+		display: none;
+	}
 }

@@ -1,87 +1,117 @@
 <template>
-	<fieldset>
-		<legend>Item Price</legend>
-		<div class="fieldset-content">
-			<input type="number" id="gold"   min="0" v-model.number="gp">
-			<label for="gold" class="coin-type">gp</label>
-
-			<input type="number" id="silver" min="0" v-model.number="sp">
-			<label for="silver" class="coin-type">sp</label>
-
-			<input type="number" id="copper" min="0" v-model.number="cp">
-			<label for="copper" class="coin-type">cp</label>
-
-			<div class="total-coins">
-				<span>{{ (copperComputed / 100).toFixed(2) }}</span>
-			</div>
-			<span class="coin-type">gp</span>
+	<div class="input-header number-header">
+		<label class="header" for="gold">
+			Item Price
+		</label>
+		<div class="total-coins">
+			<span>{{ formatCoins(copperComputed, CoinFormat.DecimalGp) }}</span>
 		</div>
-	</fieldset>
+	</div>
+
+	<div class="input-wrapper">
+		<label class="coin-type">
+			<input type="number" min="0" max="10000000" v-model.number="gp"> gp
+		</label>
+		<label class="coin-type">
+			<input type="number" :min="copperValue > 0 ? -1 : 0" max="10" v-model.number="sp"> sp
+		</label>
+		<label class="coin-type">
+			<input type="number" :min="copperValue > 0 ? -1 : 0" max="10" v-model.number="cp"> cp
+		</label>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { splitCoins } from "../../util/misc";
 import { computed, ref, watch } from "vue";
 
-const props = defineProps<{
-	copperValue: number
-}>()
-const emit = defineEmits<{
-	(e: 'update:copperValue', id: number): void
-}>()
+import { CoinFormat, formatCoins } from "../../util/format";
+import { splitCoins } from "../../util/misc";
 
-const coins = splitCoins(props.copperValue)
-const cp = ref(coins.cp)
-const sp = ref(coins.sp)
-const gp = ref(coins.gp)
+const copperValue = defineModel<number>({ required: true })
 
-const copperComputed = computed(() => gp.value * 100 + sp.value * 10 + cp.value)
+const cp = ref(0)
+const sp = ref(0)
+const gp = ref(0)
+
+watch(copperValue, (value) => {
+	const coins = splitCoins(value)
+	cp.value = coins.cp
+	sp.value = coins.sp
+	gp.value = coins.gp
+}, { immediate: true })
+
+const copperComputed = computed(() => Math.max(gp.value * 100 + sp.value * 10 + cp.value, 0))
 watch(copperComputed, (value) => {
-	emit('update:copperValue', value)
+	copperValue.value = value;
 })
 </script>
 
 <style scoped lang="scss">
-.fieldset-content {
+@use "/src/assets/styles/_theme.scss";
+
+.total-coins {
+	padding: 0 1ch;
+	border-bottom: 1px theme.$highlight-color solid;
+	background: theme.$input-bg;
+
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.input-wrapper {
+	margin-top: 10px;
+	width: 90%;
+
 	display: grid;
-	grid-template-columns: repeat(4, 1fr auto);
-	align-items: stretch;
+	grid-template-columns: 1fr 1fr 1fr;
 
-	align-self: stretch;
+	height: 2em;
 
-	border: 1px grey solid;
-	border-radius: 4px;
+	label {
+		cursor: text;
 
-	input {
-		border: none;
-		background: none;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: baseline;
+		align-content: center;
 
-		width: 100%;
+		column-gap: 1ch;
+
+		box-sizing: content-box;
+
+		padding-right: 1ch;
+		padding-bottom: 1px;
+		border-bottom: 1px theme.$highlight-color solid;
+		background: theme.$input-bg;
+
+		height: calc(100% - 2px);
+
+		&:hover, &:has(*:focus-visible) {
+			background: theme.$input-bg-active;
+			border-bottom: 2px theme.$highlight-color solid;
+			padding-bottom: 0;
+		}
+
+		&:not(:last-child) {
+			border-right: 1px theme.$highlight-color solid;
+		}
 	}
 
-	input, .total-coins {
+	input[type=number] {
 		text-align: right;
 
-		&:not(:first-child) {
-			border-left: 1px grey solid;
+		padding: 0;
+		border-bottom: unset;
+		background: unset;
+
+		&:hover, &:focus-visible {
+			background: unset;
+			border-bottom: unset;
+			padding-top: unset;
 		}
-	}
-
-	.coin-type {
-		align-self: center;
-	}
-
-	.total-coins {
-		display: flex;
-		align-items: center;
-
-		> span {
-			flex: 1;
-		}
-	}
-
-	> * {
-		padding: 0 .5ch;
 	}
 }
 </style>

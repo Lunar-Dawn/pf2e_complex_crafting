@@ -6,7 +6,8 @@ import { localStorageRef } from "../util/misc";
 
 export enum Tab {
 	Calculator,
-	License,
+	Settings,
+	About,
 }
 
 export const useSettingStore = defineStore('settings', () => {
