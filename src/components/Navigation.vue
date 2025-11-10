@@ -1,8 +1,10 @@
 <template>
 	<div class="header">
 		<nav class="dropdown-wrapper">
-			<button class="open">
-				<span class="material-symbols-outlined">menu</span>
+			<button class="open" aria-label="Open Menu">
+				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+					<path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
+				</svg>
 			</button>
 			<div class="dropdown">
 				<div class="menu">
@@ -65,9 +67,18 @@ const settingStore = useSettingStore()
 	}
 
 	button {
+		display: grid;
+		place-items: center;
+
 		border: none;
 
 		background: theme.$button-bg;
+
+		svg {
+			aspect-ratio: 1;
+
+			padding: 3px;
+		}
 
 		&:hover, &:focus-visible {
 			background: theme.$button-bg-active;

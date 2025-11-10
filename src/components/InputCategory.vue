@@ -105,8 +105,6 @@ $animation-speed: 0.25s;
 
 				aspect-ratio: 1;
 
-				fill: currentColor;
-
 				transition: transform $animation-speed;
 			}
 
