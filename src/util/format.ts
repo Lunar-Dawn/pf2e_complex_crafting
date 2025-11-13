@@ -25,7 +25,7 @@ function separateFormatting(value: number): string {
 
 	const {gp, sp, cp} = splitCoins(value);
 
-	if (gp)
+	if (gp || value === 0)
 		coins.push(`${formatDigits(gp)} gp`)
 	if(sp)
 		coins.push(`${sp} sp`)
