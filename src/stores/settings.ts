@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { CoinFormat } from "../util/format";
-import { localStorageRef } from "../util/misc";
+import { localStorageRef } from "./util";
 
 export enum Tab {
 	Calculator,

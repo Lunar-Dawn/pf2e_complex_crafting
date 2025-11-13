@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { computed } from "vue";
 
-import { baseRollOutcome, Outcome, rollOutcome, URLPos, urlRef } from "../util/misc";
+import { baseRollOutcome, Outcome, rollOutcome } from "../util/misc";
+import { URLPos, urlRef } from "./util";
 
 import { useCharacterStore } from "./character";
 import { useItemStore } from "./item";

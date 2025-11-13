@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed } from "vue";
 
 import earnIncomeTable from "../util/earnIncomeTable";
-import { URLPos, urlRef } from "../util/misc";
+import { URLPos, urlRef } from "./util";
 import { ProficiencyLevel } from "../util/proficiency";
 
 export const useCharacterStore = defineStore('character', () => {

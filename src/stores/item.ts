@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, watch } from "vue";
 
 import { dcByLevel } from "../util/dcByLevel";
-import { URLPos, urlRef } from "../util/misc";
+import { URLPos, urlRef } from "./util";
 import { Rarity } from "../util/rarity";
 
 export const useItemStore = defineStore('item', () => {
