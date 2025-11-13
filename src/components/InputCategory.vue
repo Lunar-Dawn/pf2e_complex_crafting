@@ -4,10 +4,15 @@
 			<h1 @click="toggleShown">{{ title }}</h1>
 
 			<Transition name="reset-hider" mode="out-in">
-				<div v-if="reset !== null && !hidden" class="button-wrapper">
-					<button @click="reset" :aria-label="`Reset ${title}`" :title="`Reset ${title}`" class="reset-icon">
+				<div v-if="reset !== null && !hidden" class="button-wrapper reset-undo" :class="{ 'undo-active': undoActive }">
+					<button @click="onReset" :aria-label="`Reset ${title}`" :title="`Reset ${title}`" class="reset-icon">
 						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
 							<path d="M304.62-160q-26.85 0-45.74-18.88Q240-197.77 240-224.62V-720h-40v-40h160v-30.77h240V-760h160v40h-40v495.38q0 27.62-18.5 46.12Q683-160 655.38-160H304.62ZM680-720H280v495.38q0 10.77 6.92 17.7 6.93 6.92 17.7 6.92h350.76q9.24 0 16.93-7.69 7.69-7.69 7.69-16.93V-720ZM392.31-280h40v-360h-40v360Zm135.38 0h40v-360h-40v360ZM280-720v520-520Z"/>
+						</svg>
+					</button>
+					<button @click="onUndo" :aria-label="`Undo reset of ${title}`" :title="`Undo`">
+						<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+							<path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
 						</svg>
 					</button>
 				</div>
@@ -33,13 +38,33 @@
 import { ref } from "vue";
 import CollapseAnimation from "./animations/CollapseAnimation.vue";
 
-const { title, reset = null } = defineProps<{
+const { reset = null } = defineProps<{
 	title: string,
-	reset?: () => void,
+	reset?: () => (() => void),
 }>();
 
 const hidden = ref(false)
 const toggleShown = () => hidden.value = !hidden.value
+
+const undo = ref<(() => void) | null>(null)
+const undoActive = ref(false)
+const clearUndoTimeout = ref<number | undefined>(undefined)
+
+const onReset = () => {
+	if(undoActive.value || reset === null)
+		return
+
+	undo.value = reset()
+
+	undoActive.value = true
+	clearUndoTimeout.value = window.setTimeout(() => undoActive.value = false, 15000)
+}
+const onUndo = () => {
+	undo.value?.()
+
+	undoActive.value = false
+	window.clearTimeout(clearUndoTimeout.value)
+}
 </script>
 
 <style scoped lang="scss">
@@ -78,6 +103,22 @@ $animation-speed: 0.25s;
 			transition: width $animation-speed;
 
 			overflow: hidden;
+		}
+
+		.reset-undo {
+			display: grid;
+			grid-template-columns: 4rem 4rem;
+
+			button {
+				position: relative;
+				left: 0;
+
+				transition: left $animation-speed;
+			}
+
+			&.undo-active button {
+				left: -4rem;
+			}
 		}
 
 		button {

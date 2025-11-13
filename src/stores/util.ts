@@ -1,4 +1,5 @@
 import { Base64 } from "js-base64";
+import { Store, storeToRefs } from "pinia";
 import { ref, Ref, watch } from "vue";
 
 // Try to enforce at least *some* consistency and order with indexes
@@ -50,4 +51,14 @@ export function localStorageRef<T>(key: string, defaultValue: T): Ref<T> {
 	})
 
 	return boundRef;
+}
+
+// Caches the $state of an entire store and creates a function that restores it, used to undo a store reset
+export function createUndoPatchFunction(store: Store) {
+	const oldState = Object.fromEntries(
+		Object.entries(storeToRefs(store))
+			.map(([k, v]) => [k, (v as Ref).value])
+	)
+
+	return () => store.$patch(oldState)
 }

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed } from "vue";
 
 import earnIncomeTable from "../util/earnIncomeTable";
-import { URLPos, urlRef } from "./util";
+import { createUndoPatchFunction, URLPos, urlRef } from "./util";
 import { ProficiencyLevel } from "../util/proficiency";
 
 export const useCharacterStore = defineStore('character', () => {
@@ -18,13 +18,18 @@ export const useCharacterStore = defineStore('character', () => {
 
 	const assuranceResult = computed((): number => 10 + totalProficiency.value);
 
-	function reset() {
-		characterLevel.value = 1;
-		proficiencyLevel.value = ProficiencyLevel.Trained;
-		intModifier.value = 0;
-		hasQuickSetup.value = false;
+	function reset(this: CharacterStore): () => void {
+		const ret = createUndoPatchFunction(this)
 
-		otherModifier.value = 0;
+		this.$patch({
+			characterLevel: 1,
+			proficiencyLevel: ProficiencyLevel.Trained,
+			intModifier: 0,
+			hasQuickSetup: false,
+			otherModifier: 0,
+		})
+
+		return ret
 	}
 
 	function earnIncomeLevel(critical: boolean): number {
@@ -39,3 +44,5 @@ export const useCharacterStore = defineStore('character', () => {
 		reset, earnIncomeLevel,
 	}
 })
+
+type CharacterStore = ReturnType<typeof useCharacterStore>

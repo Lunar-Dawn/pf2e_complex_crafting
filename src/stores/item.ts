@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, watch } from "vue";
 
 import { dcByLevel } from "../util/dcByLevel";
-import { URLPos, urlRef } from "./util";
+import { createUndoPatchFunction, URLPos, urlRef } from "./util";
 import { Rarity } from "../util/rarity";
 
 export const useItemStore = defineStore('item', () => {
@@ -17,13 +17,19 @@ export const useItemStore = defineStore('item', () => {
 	const getDC = computed((): number => dcByLevel[itemLevel.value] + rarity.value);
 	const batchCost = computed((): number => itemCost.value * batchSize.value);
 
-	function reset() {
-		itemCost.value = 0;
-		itemLevel.value = 0;
-		rarity.value = Rarity.Common;
-		batchSize.value = 1;
-		isPermanent.value = true;
-		hasFormula.value = false;
+	function reset(this: ItemStore): () => void {
+		const ret = createUndoPatchFunction(this)
+
+		this.$patch({
+			itemCost: 0,
+			itemLevel: 0,
+			rarity: Rarity.Common,
+			batchSize: 1,
+			isPermanent: true,
+			hasFormula: false,
+		})
+
+		return ret
 	}
 
 	watch(isPermanent, (value) => {
@@ -39,3 +45,5 @@ export const useItemStore = defineStore('item', () => {
 		reset,
 	}
 })
+
+type ItemStore = ReturnType<typeof useItemStore>
