@@ -72,7 +72,7 @@ const secondSnipStart = computed(() => Math.max(0, firstSnipStart.value + firstS
 const secondSnipLength = computed(() => Math.max(0, calculationStore.daysRequiredSuccess - secondSnipStart.value - context - 1));
 
 const shouldShow = (day: TableRow): boolean => {
-	if(!tooLong)
+	if(!tooLong.value)
 		return true;
 	if (day.day > firstSnipStart.value  && day.day <= firstSnipStart.value  + firstSnipLength.value)
 		return expandFirstSnip.value;
