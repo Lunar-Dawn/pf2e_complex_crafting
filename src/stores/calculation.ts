@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { baseRollOutcome, Outcome, rollOutcome } from "../util/misc";
-import { URLPos, urlRef } from "./util";
 
 import { useCharacterStore } from "./character";
 import { useItemStore } from "./item";
+import { URLPos, useURLMetaStore } from "./url";
 
 interface SuccessDay {
 	valueTotal: number, // How much the item is worth now
@@ -24,9 +24,13 @@ export interface TableRow {
 export const useCalculationStore = defineStore('craftingCalculation', () => {
 	const characterStore = useCharacterStore()
 	const itemStore = useItemStore()
+	const URLMetaStore = useURLMetaStore()
 
-	const rushSetup = urlRef(URLPos.RushSetup, 0)
-	const rushFinishing = urlRef(URLPos.RushFinishing, false)
+	const rushSetup = ref(0)
+	const rushFinishing = ref(false)
+
+	URLMetaStore.registerURLParameter(URLPos.RushSetup,     rushSetup)
+	URLMetaStore.registerURLParameter(URLPos.RushFinishing, rushFinishing)
 
 	const setupDays = computed(() => {
 		const levelDifference = itemStore.itemLevel - characterStore.characterLevel;

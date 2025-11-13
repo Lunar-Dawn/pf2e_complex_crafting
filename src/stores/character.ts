@@ -1,16 +1,25 @@
 import { defineStore } from "pinia";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import earnIncomeTable from "../util/earnIncomeTable";
-import { createUndoPatchFunction, URLPos, urlRef } from "./util";
 import { ProficiencyLevel } from "../util/proficiency";
+import { URLPos, useURLMetaStore } from "./url";
+import { createUndoPatchFunction } from "./util";
 
 export const useCharacterStore = defineStore('character', () => {
-	const characterLevel = urlRef(URLPos.CharacterLevel, 1);
-	const proficiencyLevel = urlRef(URLPos.ProficiencyLevel, ProficiencyLevel.Trained);
-	const intModifier = urlRef(URLPos.IntScore, 0);
-	const hasQuickSetup = urlRef(URLPos.HasQuickSetup, false);
-	const otherModifier = urlRef(URLPos.CraftingModifier, 0)
+	const URLMetaStore = useURLMetaStore()
+
+	const characterLevel = ref(1)
+	const proficiencyLevel = ref(ProficiencyLevel.Trained)
+	const intModifier = ref(0)
+	const hasQuickSetup = ref(false)
+	const otherModifier = ref(0)
+
+	URLMetaStore.registerURLParameter(URLPos.CharacterLevel,   characterLevel)
+	URLMetaStore.registerURLParameter(URLPos.ProficiencyLevel, proficiencyLevel)
+	URLMetaStore.registerURLParameter(URLPos.IntScore,         intModifier)
+	URLMetaStore.registerURLParameter(URLPos.HasQuickSetup,    hasQuickSetup)
+	URLMetaStore.registerURLParameter(URLPos.CraftingModifier, otherModifier)
 
 	const totalProficiency = computed((): number => characterLevel.value + proficiencyLevel.value);
 
